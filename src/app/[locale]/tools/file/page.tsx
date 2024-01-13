@@ -19,6 +19,6 @@ export async function generateMetadata({
   };
 }
 
-export default function Page(props) {
+export default function Page(props: Props) {
   return <Layout {...props} />;
 }

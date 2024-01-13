@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import { useTranslations } from "next-intl";
 
 import type { UploadFile, UploadProps } from "antd/es/upload/interface";
@@ -11,7 +11,7 @@ const { Header, Sider, Content, Footer } = Layout;
 
 const { Dragger } = Upload;
 
-export default function Page({ params }) {
+export default function Page({ params }: { params: any }) {
   console.log(`🚀 ~ file: page.tsx:12 ~ params:`, params);
 
   const { locale, convert } = params;
@@ -35,15 +35,7 @@ export default function Page({ params }) {
     // imgWindow?.document.write(image.outerHTML);
   };
 
-  const onSelectType = (type) => {
-    setFormatType(type);
-  };
-
-  const onUploadChange: UploadProps["onChange"] = ({
-    fileList: newFileList,
-  }) => {
-    setFileList(newFileList);
-  };
+  
 
   const beforeUpload = () => false;
 

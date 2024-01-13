@@ -9,7 +9,7 @@ import { Layout } from "antd";
 
 const { Header, Sider, Content, Footer } = Layout;
 
-export default function Page({ params }) {
+export default function Page({ params }: { params: any }) {
   const t = useTranslations();
 
   const [loaded, setLoaded] = useState(false);

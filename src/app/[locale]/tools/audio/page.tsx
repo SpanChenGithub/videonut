@@ -19,7 +19,7 @@ export async function generateMetadata({
   };
 }
 
-export default function Page(props) {
+export default function Page(props: Props) {
   console.log(`🚀 ~ file: audio page.tsx:convert  ~ props:`, props);
   return <Layout {...props} />;
 }

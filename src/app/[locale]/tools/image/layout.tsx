@@ -1,6 +1,6 @@
 "use client";
 import { useTranslations } from "next-intl";
-import ImgCrop from "antd-img-crop";
+// import ImgCrop from "antd-img-crop";
 
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 
@@ -27,7 +27,7 @@ const { Header, Sider, Content, Footer } = Layout;
 
 const { Dragger } = Upload;
 
-export default function Page({ params }) {
+export default function Page({ params }: { params: any }) {
   const { locale, convert } = params;
   const t = useTranslations();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -46,10 +46,6 @@ export default function Page({ params }) {
     image.src = src;
     const imgWindow = window.open(src);
     imgWindow?.document.write(image.outerHTML);
-  };
-
-  const onSelectType = (type) => {
-    setFormatType(type);
   };
 
   const onUploadChange: UploadProps["onChange"] = ({

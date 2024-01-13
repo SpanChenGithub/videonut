@@ -11,7 +11,7 @@ const { Header, Sider, Content, Footer } = Layout;
 
 const { Dragger } = Upload;
 
-export default function Page({ params }) {
+export default function Page({ params }: { params: any }) {
   console.log(`🚀 ~ file: page.tsx:12 ~ params:`, params);
 
   const { locale, convert } = params;
@@ -33,10 +33,6 @@ export default function Page({ params }) {
     // image.src = src;
     // const imgWindow = window.open(src);
     // imgWindow?.document.write(image.outerHTML);
-  };
-
-  const onSelectType = (type) => {
-    setFormatType(type);
   };
 
   const onUploadChange: UploadProps["onChange"] = ({

@@ -1,15 +1,14 @@
 "use client";
 import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
-import { twMerge } from 'tailwind-merge'
-
+import { twMerge } from "tailwind-merge";
 
 import { Layout, Tag } from "antd";
 import Icons from "@/components/Icons";
 
 const { Header, Sider, Content, Footer } = Layout;
 
-export default function Page({ params }) {
+export default function Page({ params }: { params: any }) {
   const t = useTranslations();
 
   const locale = useLocale();
