@@ -17,9 +17,5 @@
   "nav": {
     "home": "Home",
     "video": "Video"
-  },
-  "theme": {
-    "light": "light",
-    "dark": "dark"
   }
 }

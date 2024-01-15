@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
 
 import { NextIntlClientProvider } from "next-intl";
 // import { getLocale, getTranslations } from "next-intl/server";
 
 import { SiteHeader } from "@/components/SiteHeader";
-import ThemeProvider from "@/components/provider/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "media convert",
@@ -31,10 +31,10 @@ export default async function RootLayout({
       <head />
       <body>
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <ThemeProvider locale={locale}>
+          <AntdRegistry>
             <SiteHeader />
             <main className="h-screen w-screen">{children}</main>
-          </ThemeProvider>
+          </AntdRegistry>
         </NextIntlClientProvider>
       </body>
     </html>
