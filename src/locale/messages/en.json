@@ -15,7 +15,11 @@
     "file_tools": "File Tools"
   },
   "nav": {
-    "home": "Home",
-    "video": "Video"
+    "Product": "Product",
+    "UseCases": "UseCases",
+    "Pricing": "Pricing",
+    "Resources": "Resources",
+    "ForBusiness": "ForBusiness",
+    "ContactSales": "Contact Sales"
   }
 }

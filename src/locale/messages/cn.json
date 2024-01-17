@@ -15,6 +15,11 @@
     "file_tools": "文件工具"
   },
   "nav": {
-    "home": "首页"
+    "Product": "产品",
+    "UseCases": "使用场景",
+    "Pricing": "价格",
+    "Resources": "资源",
+    "ForBusiness": "企业服务",
+    "ContactSales": "联系销售"
   }
 }

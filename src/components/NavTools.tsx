@@ -14,6 +14,7 @@ const { Header, Footer, Sider, Content } = Layout;
 
 export interface NavItem {
   name: React.ReactNode;
+  hideDropdown?: boolean;
   items?: MenuProps["items"];
 }
 
@@ -25,54 +26,67 @@ export default function NavTools() {
 
   const ToolImages: MenuProps["items"] = [
     {
-      key: "image",
+      key: "Product",
       label: (
         <Link
-          href={`/${locale}/tools/image`}
+          href={`/${locale}/product`}
           locale={locale}
           className="flex-center"
         >
           <Icons.FileImage className="mr-2 h-4 w-4 text-orange-500" />
-          <span>{t("tools.image")}</span>
+          <span>{t("nav.Product")}</span>
         </Link>
       ),
     },
     {
-      key: "audio",
+      key: "UseCases",
       label: (
         <Link
-          href={`/${locale}/tools/audio`}
+          href={`/${locale}/use-cases`}
           locale={locale}
           className="flex-center"
         >
           <Icons.FileAudio className="mr-2 h-4 w-4 text-blue-500" />
-          <span>{t("tools.audio")}</span>
+          <span>{t("nav.UseCases")}</span>
         </Link>
       ),
     },
     {
-      key: "video",
+      key: "Resources",
       label: (
         <Link
-          href={`/${locale}/tools/video`}
+          href={`/${locale}/resources`}
           locale={locale}
           className="flex-center"
         >
           <Icons.FileVideo className="mr-2 h-4 w-4 text-rose-500" />
-          <span>{t("tools.video")}</span>
+          <span>{t("nav.Resources")}</span>
         </Link>
       ),
     },
     {
-      key: "file",
+      key: "ForBusiness",
       label: (
         <Link
-          href={`/${locale}/tools/file`}
+          href={`/${locale}/for-business`}
           locale={locale}
           className="flex items-center"
         >
           <Icons.FileText className="mr-2 h-4 w-4 text-green-500" />
-          <span>{t("tools.file")}</span>
+          <span>{t("nav.ForBusiness")}</span>
+        </Link>
+      ),
+    },
+    {
+      key: "Pricing",
+      label: (
+        <Link
+          href={`/${locale}/pricing`}
+          locale={locale}
+          className="flex items-center"
+        >
+          <Icons.FileText className="mr-2 h-4 w-4 text-green-500" />
+          <span>{t("nav.Pricing")}</span>
         </Link>
       ),
     },
@@ -80,33 +94,48 @@ export default function NavTools() {
 
   const NavItems: NavItem[] = [
     {
-      name: t("tools.image"),
+      name: t("nav.Product"),
       items: ToolImages,
     },
     {
-      name: t("tools.audio"),
+      name: t("nav.UseCases"),
       items: ToolImages,
     },
     {
-      name: t("tools.video"),
+      name: t("nav.Resources"),
       items: ToolImages,
     },
     {
-      name: t("tools.file"),
+      name: t("nav.ForBusiness"),
       items: ToolImages,
+    },
+    {
+      name: t("nav.Pricing"),
+      items: ToolImages,
+      hideDropdown: true,
     },
   ];
 
   return (
-    <nav className="flex flex-1 gap-2 md:gap-5">
-      {NavItems.map(({ name, items }, index) => (
-        <Dropdown key={index} menu={{ items }}>
-          <div className="btn">
-            <b className="text-lg	text-lime-900	">{name}</b>
-            <Icons.ChevronDown className="mr-2 h-4 w-4" />
+    <nav className="flex flex-1 gap-x-[40px]">
+      {NavItems.map(({ name, items, hideDropdown }, index) => {
+        return hideDropdown ? (
+          <div key={index} className="flex-center">
+            <span className="text-base font-semibold	text-[#191919]	">
+              {name}
+            </span>
           </div>
-        </Dropdown>
-      ))}
+        ) : (
+          <Dropdown key={index} menu={{ items }}>
+            <div className="flex-center gap-x-[4px]">
+              <span className="text-base font-semibold	text-[#191919]	">
+                {name}
+              </span>
+              <Icons.ChevronDown className="h-[16px] w-[16px]" />
+            </div>
+          </Dropdown>
+        );
+      })}
     </nav>
   );
 }

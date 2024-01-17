@@ -21,20 +21,15 @@ export const Logo: React.FC<ILogoProps> = (props) => {
     }`;
   };
   return (
-    <Link href="/" className="flex mr-32">
+    <Link href="/" className="flex">
       <div className="hidden items-center space-x-2 md:flex">
-        {/* <Image
-          src="/logo.jpg"
-          // src="/logo.png"
-          // src={imageLoader}
-          // loader={imageLoader}
-          className="rounded-md w-auto h-auto"
-          // src="me.png"
-          alt="Picture of the author"
-          width={30}
-          height={30}
-        /> */}
-        <span className="text-lg">{t("site.title")}</span>
+        <Image
+          src="/assets/images/Logo.webp"
+          className="rounded-md"
+          alt="Picture of videonut logo"
+          width={112}
+          height={28}
+        />
       </div>
     </Link>
   );
