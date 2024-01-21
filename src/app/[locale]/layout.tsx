@@ -33,7 +33,9 @@ export default async function RootLayout({
         <NextIntlClientProvider locale={locale} messages={messages}>
           <AntdRegistry>
             <SiteHeader />
-            <main className="h-screen w-screen">{children}</main>
+            <main className="m-aut text-gray-900 h-[calc(100vh-60px)] w-screen">
+              {children}
+            </main>
           </AntdRegistry>
         </NextIntlClientProvider>
       </body>

@@ -7,20 +7,20 @@ const withTheme = (node: JSX.Element) => (
   <>
     <ConfigProvider
       theme={{
+        components: {
+          Button: {
+            controlHeight: 40,
+            borderRadius: 4,
+          },
+        },
         token: {
-          colorPrimary: "#52c41a",
+          colorPrimary: "#0067D1",
+          colorInfo: "#0067d1",
+          colorTextBase: "#191919",
         },
       }}
     >
-      <ConfigProvider
-        theme={{
-          token: {
-            borderRadius: 16,
-          },
-        }}
-      >
-        {node}
-      </ConfigProvider>
+      {node}
     </ConfigProvider>
   </>
 );
