@@ -43,9 +43,9 @@ const Page = ({ params }: IPageProps) => {
     <Flex vertical align="center" className="bg-[#E6F3FF] h-full">
       <Layout className="max-w-7xl w-full items-center">
         <Flex vertical align="center" className="w-full h-full bg-[#E6F3FF]">
-          <article className="py-[48px]">
+          <article className="py-[48px] text-center">
             <h1 className="text-5xl font-black">Online Video Converter</h1>
-            <Text>
+            <Text className="!text-gray-900 font-medium text-xl">
               Use the free online video converter to change your video file
               format.
             </Text>
