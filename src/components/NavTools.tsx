@@ -96,7 +96,7 @@ export default function NavTools() {
   ];
 
   return (
-    <nav className="flex flex-1 text-base font-semibold	text-[#191919] lg:gap-x-[20px] xl:gap-x-[40px]">
+    <nav className="flex flex-1 text-base font-medium	text-[#191919] lg:gap-x-[20px] xl:gap-x-[40px]">
       {NavItems.map(({ name, items, hideDropdown }, index) => {
         return hideDropdown ? (
           <Link
