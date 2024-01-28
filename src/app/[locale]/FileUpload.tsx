@@ -12,8 +12,26 @@ export default function FileUpload({ setFile }: { setFile: Function }) {
   const t = useTranslations();
   const locale = useLocale();
 
+  const handleUpload = async (option: any) => {
+    const file = option.file as File;
+
+    console.log("file:", file);
+
+    setFile(file);
+
+    try {
+      // 使用第三方服务进行文件上传
+      // const result = await uploadService.upload(file)
+      // onSuccess的回调参数可以在 UploadFile.response 中获取
+      // option.onSuccess(result.url)
+    } catch (error) {
+      // option.onError(error)
+    }
+  };
+
   const props: UploadProps = {
     name: "file",
+    customRequest: handleUpload,
     onChange(info) {
       const { status } = info.file;
       if (status !== "uploading") {
