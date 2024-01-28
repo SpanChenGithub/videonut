@@ -2,8 +2,11 @@
 
 import { Button, Flex, Layout, Radio, Space, Tooltip, Typography } from "antd";
 import Icons from "@/components/Icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { RadioChangeEvent } from "antd";
+import { Circles } from "react-loader-spinner";
+
+import { VideoToFrames, VideoToFramesMethod } from "./VideoToFrame";
 
 import Image from "next/image";
 
@@ -57,11 +60,38 @@ const videoList = [
     icon: "/assets/svg/remove-logo.svg",
   },
 ];
-function VideoLayout() {
+function VideoLayout({ file }: { file: File }) {
   const [currentAction, setCurrentAction] = useState("");
   const handleCurrentAction = (value: string) => {
     return () => setCurrentAction(value);
   };
+
+  const [images, setImages] = useState([""]);
+  const [status, setStatus] = useState("IDLE");
+
+  useEffect(() => {
+    const handleFileToFrames = async () => {
+      const fileUrl = URL.createObjectURL(file);
+
+      const frames = await VideoToFrames.getFrames(
+        fileUrl,
+        30,
+        VideoToFramesMethod.totalFrames
+      );
+      setStatus("IDLE");
+      setImages(frames);
+    };
+
+    if (file) {
+      setImages([]);
+      setStatus("LOADING");
+      handleFileToFrames();
+    }
+  }, [file]);
+
+  // const [images, setImages] = useState([]);
+  // const [status, setStatus] = useState("IDLE");
+  const now = new Date().toDateString();
 
   return (
     <Layout className="h-full">
@@ -89,7 +119,37 @@ function VideoLayout() {
           ))}
         </Space.Compact>
 
-        <Flex>sss</Flex>
+        <Flex
+          justify="space-evenly"
+          vertical
+          align="center"
+          className="py-[24px] h-full"
+        >
+          {images.length > 0 && (
+            <img width={214} height={378} src={images[0]} alt="home" />
+          )}
+          <Flex justify="center" align="center">
+            {status === "LOADING" ? (
+              <Circles color="#00BFFF" height={100} width={100} />
+            ) : (
+              <Flex>
+                {images?.length > 0 && (
+                  <Space size={0} className="output">
+                    {images.map((imageUrl, index) => (
+                      <a
+                        key={imageUrl}
+                        href={imageUrl}
+                        download={`${now}-${index + 1}.png`}
+                      >
+                        <img src={imageUrl} alt="" />
+                      </a>
+                    ))}
+                  </Space>
+                )}
+              </Flex>
+            )}
+          </Flex>
+        </Flex>
       </Layout.Content>
     </Layout>
   );

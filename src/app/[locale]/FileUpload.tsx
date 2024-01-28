@@ -8,7 +8,7 @@ const { Dragger } = Upload;
 const { Header, Sider, Content, Footer } = Layout;
 const { Text, Paragraph, Title } = Typography;
 
-export default function FileUpload({ setHasFile }: { setHasFile: Function }) {
+export default function FileUpload({ setFile }: { setFile: Function }) {
   const t = useTranslations();
   const locale = useLocale();
 
@@ -20,7 +20,7 @@ export default function FileUpload({ setHasFile }: { setHasFile: Function }) {
         console.log(info.file, info.fileList);
       }
       if (status === "done") {
-        setHasFile(true);
+        setFile(info.file.originFileObj);
         // message.success(`${info.file.name} file uploaded successfully.`);
       } else if (status === "error") {
         message.error(`${info.file.name} file upload failed.`);

@@ -9,11 +9,11 @@ import withTheme from "@/theme";
 import { useState } from "react";
 
 const Page = ({ params }: IPageProps) => {
-  const [hasFile, setHasFile] = useState(true);
+  const [file, setFile] = useState(null);
   // const t = useTranslations();
   // const locale = useLocale();
 
-  return hasFile ? <VideoLayout /> : <FileUpload setHasFile={setHasFile} />;
+  return file ? <VideoLayout file={file} /> : <FileUpload setFile={setFile} />;
 };
 
 const HomePage = (props: IPageProps) => {
