@@ -9,11 +9,14 @@ const withTheme = (node: JSX.Element) => (
       theme={{
         components: {
           Button: {
-            controlHeight: 40,
+            controlHeight: 32,
             borderRadius: 4,
             colorPrimaryHover: "rgb(45, 147, 255)",
             colorPrimaryActive: "rgb(0, 88, 182)",
             colorPrimary: "rgb(0, 115, 238)",
+          },
+          Tooltip: {
+            colorBgSpotlight: "rgb(0, 115, 238)",
           },
         },
         token: {

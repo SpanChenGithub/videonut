@@ -8,33 +8,29 @@ const { Dragger } = Upload;
 const { Header, Sider, Content, Footer } = Layout;
 const { Text, Paragraph, Title } = Typography;
 
-const uploadProps: UploadProps = {
-  name: "file",
-  // multiple: true,
-  action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
-  onChange(info) {
-    const { status } = info.file;
-    if (status !== "uploading") {
-      console.log(info.file, info.fileList);
-    }
-    if (status === "done") {
-      message.success(`${info.file.name} file uploaded successfully.`);
-    } else if (status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  },
-  onDrop(e) {
-    console.log("Dropped files", e.dataTransfer.files);
-  },
-};
 export default function FileUpload({ setHasFile }: { setHasFile: Function }) {
   const t = useTranslations();
   const locale = useLocale();
 
-  const handleUpload = (file: File) => {
-    const uploadFile = file;
-    setHasFile(true);
+  const props: UploadProps = {
+    name: "file",
+    onChange(info) {
+      const { status } = info.file;
+      if (status !== "uploading") {
+        console.log(info.file, info.fileList);
+      }
+      if (status === "done") {
+        setHasFile(true);
+        // message.success(`${info.file.name} file uploaded successfully.`);
+      } else if (status === "error") {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+    onDrop(e) {
+      console.log("Dropped files", e.dataTransfer.files);
+    },
   };
+
   return (
     <Flex vertical align="center" className="bg-[#E6F3FF] h-full">
       <Layout className="max-w-7xl w-full items-center">
@@ -51,11 +47,12 @@ export default function FileUpload({ setHasFile }: { setHasFile: Function }) {
             justify="center"
             className="bg-white rounded-2xl p-[24px] h-[360px] w-[1040px]"
           >
-            <Dragger className="w-full" {...uploadProps}>
+            <Dragger className="w-full" {...props}>
               <Paragraph className="w-full">
                 <Button
                   className="!flex m-auto"
                   type="primary"
+                  size="large"
                   icon={<Icons.Upload size="20px" />}
                 >
                   Upload Files
