@@ -9,6 +9,9 @@ import { Circles } from "react-loader-spinner";
 import { VideoToFrames, VideoToFramesMethod } from "./VideoToFrame";
 
 import Image from "next/image";
+import AppDemo from "@/components/Timeline";
+
+const DURATION = 500;
 
 const videoList = [
   {
@@ -66,8 +69,20 @@ function VideoLayout({ file }: { file: File }) {
     return () => setCurrentAction(value);
   };
 
+  const [currentTime, setCurrentTime] = useState(0);
+
   const [images, setImages] = useState([""]);
   const [status, setStatus] = useState("IDLE");
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setCurrentTime((prev) => (prev >= DURATION * 1000 ? 0 : prev + 100));
+    }, 100);
+
+    return () => {
+      clearInterval(id);
+    };
+  }, []);
 
   useEffect(() => {
     const handleFileToFrames = async () => {
@@ -133,19 +148,15 @@ function VideoLayout({ file }: { file: File }) {
               <Circles color="#00BFFF" height={100} width={100} />
             ) : (
               <Flex>
-                {images?.length > 0 && (
-                  <Space size={0} className="output">
-                    {images.map((imageUrl, index) => (
-                      <a
-                        key={imageUrl}
-                        href={imageUrl}
-                        download={`${now}-${index + 1}.png`}
-                      >
-                        <img src={imageUrl} alt="" />
-                      </a>
-                    ))}
-                  </Space>
-                )}
+                <AppDemo>
+                  {images?.length > 0 && (
+                    <Space size={0} className="output h-full">
+                      {images.map((imageUrl) => (
+                        <img src={imageUrl} alt={imageUrl} key={imageUrl} />
+                      ))}
+                    </Space>
+                  )}
+                </AppDemo>
               </Flex>
             )}
           </Flex>
