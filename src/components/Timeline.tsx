@@ -3,6 +3,7 @@ import { css } from "@emotion/css";
 import { a, useSpring, to } from "react-spring";
 import { useDrag } from "@use-gesture/react";
 import { clamp } from "lodash-es";
+import Image from "next/image";
 
 const HOUR_IN_MS = 3600000;
 
@@ -18,41 +19,23 @@ const formatTime = (ms: any) => {
 };
 
 const OUTER_WIDTH = 700;
-const HANDLE_WIDTH = 27;
+const HANDLE_WIDTH = 16;
 const INNER_WIDTH = OUTER_WIDTH - HANDLE_WIDTH * 2;
 const BORDER_WIDTH = 6;
-
-const HandleStrip = () => {
-  return (
-    <div
-      className={css`
-        height: 20px;
-        border-radius: 32px;
-        width: 3px;
-        background: currentColor;
-      `}
-    />
-  );
-};
 
 const Handle = ({ position, ...rest }: any) => {
   return (
     <a.div
-      className={css`
-        position: absolute;
-        top: 0;
-        ${position}: 0;
-        height: 100%;
-        width: ${HANDLE_WIDTH}px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: w-resize;
-        background: #ffcd02;
-      `}
+      className="absolute top-0 h-full flex items-center justify-center cursor-ew-resize bg-white"
       {...rest}
     >
-      <HandleStrip />
+      <Image
+        className="touch-none user-select-none -webkit-touch-callout-none"
+        src="/assets/svg/drag-dot.svg"
+        alt="cut video"
+        width={4}
+        height={24}
+      />
     </a.div>
   );
 };
@@ -128,159 +111,72 @@ const Timeline = ({ duration, currentTime, children }: any) => {
 
   return (
     <div
-      className={css`
-        width: ${OUTER_WIDTH}px;
-        height: 100%;
-        touch-action: none;
-        user-select: none;
-        -webkit-touch-callout: none;
-      `}
+      style={{ width: `${OUTER_WIDTH}px` }}
+      className="h-full touch-none user-select-none -webkit-touch-callout-none"
     >
-      <div
-        className={css`
-          position: relative;
-          border-radius: 0.5rem;
-          width: 100%;
-          height: 100%;
-        `}
-      >
-        <div
-          className={css`
-            width: 100%;
-            height: 100%;
-            padding: ${BORDER_WIDTH}px ${HANDLE_WIDTH}px;
-          `}
-        >
-          <div
-            className={css`
-              position: relative;
-              width: 100%;
-              height: 100%;
-            `}
-          >
-            <div
-              className={css`
-                width: 100%;
-                height: 100%;
-                background: #444;
-              `}
-            >
-              {children}
-            </div>
-            <div
-              className={css`
-                width: 5px;
-                height: calc(100% + ${BORDER_WIDTH / 2}px);
-                background: white;
-                position: absolute;
-                top: ${-BORDER_WIDTH / 4}px;
-                left: ${(currentTime / 1000) * (100 / duration)}%;
-                border-radius: 50px;
-                border: 1px solid rgba(0, 0, 0, 0.2);
-                z-index: 1;
-              `}
-            />
-          </div>
-        </div>
+      <div className="relative w-full h-full">
+        <div className="w-full h-full">{children}</div>
         <a.div
           id="timeline-container"
-          className={css`
-            top: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 0.5rem;
-            border-top: ${BORDER_WIDTH}px solid;
-            border-bottom: ${BORDER_WIDTH}px solid
-              ${active ? "#ffcd02" : "#ffcd02"};
-            position: absolute;
-          `}
-          style={{
-            x,
-            width,
-            borderColor: active.to((active) =>
-              active ? "#ffcd02" : "#ffcd02"
-            ),
-          }}
+          className="absolute top-0 w-full h-full"
+          style={{ x, width }}
         >
           <a.div
             id="timeline-inner"
             {...bindMiddle()}
-            className={css`
-              position: absolute;
-              width: 100%;
-              height: 100%;
-              cursor: grab;
-
-              &:active {
-                cursor: grabbing;
-              }
-            `}
+            className="absolute w-full h-full cursor-grab :active:cursor-grabbing"
           />
           <Handle
-            position="left"
             {...bindLeft()}
             style={{
-              background: active.to((active) => (active ? "#ffcd02" : "#222")),
-              color: active.to((active) => (active ? "#ffcd02" : "#fff")),
+              borderRadius: `4px 0 0 4px`,
+              width: `${HANDLE_WIDTH}px`,
+              left: 0,
             }}
           />
           <Handle
-            position="right"
             {...bindRight()}
             style={{
-              background: active.to((active) => (active ? "#ffcd02" : "#222")),
-              color: active.to((active) => (active ? "#ffcd02" : "#fff")),
+              borderRadius: `0 4px 4px 0`,
+              width: `${HANDLE_WIDTH}px`,
+              right: 0,
             }}
           />
 
           <a.div
-            className={css`
-              position: absolute;
-              bottom: calc(100% + ${BORDER_WIDTH + 8}px);
-              left: ${HANDLE_WIDTH}px;
-              color: white;
-            `}
+            className="absolute"
             style={{
+              left: `${HANDLE_WIDTH}px`,
+              color: "white",
+              bottom: `calc(100% + ${BORDER_WIDTH + 8}px)`,
               display: fromVisible.to((visible) =>
                 visible ? "block" : "none"
               ),
             }}
           >
             <div
-              className={css`
-                transform: translateX(calc(-50% + 1px));
-              `}
+              style={{
+                transform: `translateX(calc(-50% + 1px))`,
+              }}
             >
               <AnimatedTime
                 time={x.to((x) => (((x * 100) / INNER_WIDTH) * duration) / 100)}
               />
             </div>
-            <div
-              className={css`
-                width: 1px;
-                height: 2rem;
-                background: white;
-              `}
-            />
+            <div className="w-1 h-8 bg-white" />
           </a.div>
           <a.div
-            className={css`
-              position: absolute;
-              bottom: calc(100% + ${BORDER_WIDTH + 8}px);
-              right: ${HANDLE_WIDTH}px;
-              color: white;
-              display: flex;
-              flex-direction: column;
-              align-items: flex-end;
-            `}
+            className="absolute text-white flex flex-col items-end"
             style={{
+              bottom: `calc(100% + ${BORDER_WIDTH + 8}px)`,
+              right: `${HANDLE_WIDTH}px`,
               display: toVisible.to((visible) => (visible ? "flex" : "none")),
             }}
           >
             <div
-              className={css`
-                transform: translateX(calc(50% - 1px));
-              `}
+              style={{
+                transform: `translateX(calc(50% - 1px))`,
+              }}
             >
               <AnimatedTime
                 time={to([x, width], (x, width) => {
@@ -293,13 +189,7 @@ const Timeline = ({ duration, currentTime, children }: any) => {
                 })}
               />
             </div>
-            <div
-              className={css`
-                width: 1px;
-                height: 2rem;
-                background: white;
-              `}
-            />
+            <div className="w-[1px] h-8 bg-white" />
           </a.div>
         </a.div>
       </div>
@@ -324,40 +214,10 @@ export default function AppDemo({ children }: { children: any }) {
   }, []);
 
   return (
-    <div
-      className={css`
-        display: grid;
-        flex: 1;
-        place-items: center;
-      `}
-    >
-      <div
-        className={css`
-          display: flex;
-        `}
-      >
-        <div
-          className={css`
-            width: ${OUTER_WIDTH}px;
-            height: 62px;
-            background: #222;
-            border-top-right-radius: 0.5rem;
-            border-bottom-right-radius: 0.5rem;
-          `}
-        >
-          <div
-            className={css`
-              width: 100%;
-              height: 100%;
-              border-radius: 0.5rem;
-            `}
-          >
-            <Timeline duration={DURATION} currentTime={currentTime}>
-              {children}
-            </Timeline>
-          </div>
-        </div>
-      </div>
+    <div className="h-[60px] flex" style={{ width: `${OUTER_WIDTH}px` }}>
+      <Timeline duration={DURATION} currentTime={currentTime}>
+        {children}
+      </Timeline>
     </div>
   );
 }

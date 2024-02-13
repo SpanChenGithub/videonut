@@ -1,6 +1,16 @@
 "use client";
 
-import { Button, Flex, Layout, Radio, Space, Tooltip, Typography } from "antd";
+import {
+  Button,
+  Col,
+  Flex,
+  Layout,
+  Radio,
+  Row,
+  Space,
+  Tooltip,
+  Typography,
+} from "antd";
 import Icons from "@/components/Icons";
 import React, { useEffect, useState } from "react";
 import type { RadioChangeEvent } from "antd";
@@ -150,11 +160,17 @@ function VideoLayout({ file }: { file: File }) {
               <Flex>
                 <AppDemo>
                   {images?.length > 0 && (
-                    <Space size={0} className="output h-full">
+                    <Row wrap={false} justify="center" className="h-full">
                       {images.map((imageUrl) => (
-                        <img src={imageUrl} alt={imageUrl} key={imageUrl} />
+                        <Col key={imageUrl} className="h-full">
+                          <img
+                            src={imageUrl}
+                            alt={imageUrl}
+                            className="h-full"
+                          />
+                        </Col>
                       ))}
-                    </Space>
+                    </Row>
                   )}
                 </AppDemo>
               </Flex>
