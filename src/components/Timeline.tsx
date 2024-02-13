@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
-import { css } from "@emotion/css";
 import { a, useSpring, to } from "react-spring";
-import { useDrag } from "@use-gesture/react";
+import { useDrag } from "react-use-gesture";
 import { clamp } from "lodash-es";
-import Image from "next/image";
 
 const HOUR_IN_MS = 3600000;
 
@@ -48,14 +46,29 @@ const Timeline = ({ duration, currentTime, children }: any) => {
     immediate: true,
   }));
 
+  const [leftGap, setLeftGap] = useState(0);
+  const [rightGap, setRightGap] = useState(0);
+  const [visibleWidth, setVisibleWidth] = useState(INNER_WIDTH);
+
   const bindLeft = useDrag(
     ({ movement: [mx], first, memo, down }) => {
       if (first) memo = { width: width.get(), x: x.get() };
+
       const maxX =
         pcToPxOuter(memo.width.slice(0, -1)) + memo.x - 2 * HANDLE_WIDTH;
       const nextX = clamp(mx, 0, maxX);
+
       const nextWidth =
         memo.width.slice(0, -1) - pxToPcOuter(nextX - memo.x) + "%";
+
+      const center =
+        (Number(memo.width.slice(0, -1) - pxToPcOuter(nextX - memo.x)) / 100) *
+        OUTER_WIDTH;
+
+      setLeftGap(nextX);
+      const right = OUTER_WIDTH - center - nextX;
+      setRightGap(right);
+      setVisibleWidth(center);
       set({
         x: nextX,
         width: nextWidth,
@@ -65,7 +78,7 @@ const Timeline = ({ duration, currentTime, children }: any) => {
       });
       return memo;
     },
-    { from: () => [x.get(), 0] }
+    { initial: () => [x.get()] }
   );
   const bindRight = useDrag(({ movement: [ox], first, memo, down }) => {
     if (first) memo = width.get();
@@ -73,6 +86,12 @@ const Timeline = ({ duration, currentTime, children }: any) => {
     const minWidth = pxToPcOuter(2 * HANDLE_WIDTH);
     const nextWidth =
       clamp(memo.slice(0, -1) - pxToPcOuter(-ox), minWidth, maxWidth) + "%";
+
+    const center =
+      (clamp(memo.slice(0, -1) - pxToPcOuter(-ox), minWidth, maxWidth) / 100) *
+      OUTER_WIDTH;
+    const right = OUTER_WIDTH - center - leftGap;
+    setRightGap(right);
 
     set({
       width: nextWidth,
@@ -87,9 +106,14 @@ const Timeline = ({ duration, currentTime, children }: any) => {
     ({ movement: [mx], down }) => {
       const maxX = OUTER_WIDTH - pcToPxOuter(width.get().slice(0, -1));
       const nextX = clamp(mx, 0, maxX);
+
+      setLeftGap(nextX);
+      const right = OUTER_WIDTH - visibleWidth - nextX;
+      setRightGap(right);
+
       set({ x: nextX, fromVisible: down, toVisible: down, immediate: true });
     },
-    { from: () => [x.get(), 0] }
+    { initial: () => [x.get()] }
   );
 
   return (
@@ -176,6 +200,17 @@ const Timeline = ({ duration, currentTime, children }: any) => {
             <div className="w-[1px] h-8 bg-white" />
           </a.div>
         </a.div>
+
+        <div id="timeline-left" className="z-1 absolute top-0 h-full">
+          <svg width={`${leftGap}px`} height="100%">
+            <rect width="100%" height="100%" fill="rgba(0, 0, 0, .7)" />
+          </svg>
+        </div>
+        <div id="timeline-right" className="z-1 absolute right-0 top-0 h-full">
+          <svg width={`${rightGap}px`} height="100%">
+            <rect width="100%" height="100%" fill="rgba(0, 0, 0, .7)" />
+          </svg>
+        </div>
       </div>
     </div>
   );
@@ -187,15 +222,15 @@ export default function AppDemo({ children }: { children: any }) {
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
 
-  useEffect(() => {
-    const id = setInterval(() => {
-      setCurrentTime((prev) => (prev >= DURATION * 1000 ? 0 : prev + 100));
-    }, 1000);
+  // useEffect(() => {
+  //   const id = setInterval(() => {
+  //     setCurrentTime((prev) => (prev >= DURATION * 1000 ? 0 : prev + 100));
+  //   }, 1000);
 
-    return () => {
-      clearInterval(id);
-    };
-  }, []);
+  //   return () => {
+  //     clearInterval(id);
+  //   };
+  // }, []);
 
   return (
     <div className="h-[60px] flex" style={{ width: `${OUTER_WIDTH}px` }}>
