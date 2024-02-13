@@ -23,23 +23,6 @@ const HANDLE_WIDTH = 16;
 const INNER_WIDTH = OUTER_WIDTH - HANDLE_WIDTH * 2;
 const BORDER_WIDTH = 6;
 
-const Handle = ({ position, ...rest }: any) => {
-  return (
-    <a.div
-      className="absolute top-0 h-full flex items-center justify-center cursor-ew-resize bg-white"
-      {...rest}
-    >
-      <Image
-        className="touch-none user-select-none -webkit-touch-callout-none"
-        src="/assets/svg/drag-dot.svg"
-        alt="cut video"
-        width={4}
-        height={24}
-      />
-    </a.div>
-  );
-};
-
 const pxToPc = (px: any, max: any) => (px * 100) / max;
 const pcToPx = (pc: any, max: any) => (pc * max) / 100;
 
@@ -126,7 +109,8 @@ const Timeline = ({ duration, currentTime, children }: any) => {
             {...bindMiddle()}
             className="absolute w-full h-full cursor-grab :active:cursor-grabbing"
           />
-          <Handle
+          <a.div
+            className="bg-[url('/assets/svg/drag-dot.svg')] bg-no-repeat bg-center absolute top-0 h-full flex items-center justify-center cursor-ew-resize bg-white"
             {...bindLeft()}
             style={{
               borderRadius: `4px 0 0 4px`,
@@ -134,7 +118,8 @@ const Timeline = ({ duration, currentTime, children }: any) => {
               left: 0,
             }}
           />
-          <Handle
+          <a.div
+            className="bg-[url('/assets/svg/drag-dot.svg')] bg-no-repeat bg-center absolute top-0 h-full flex items-center justify-center cursor-ew-resize bg-white"
             {...bindRight()}
             style={{
               borderRadius: `0 4px 4px 0`,
@@ -142,7 +127,6 @@ const Timeline = ({ duration, currentTime, children }: any) => {
               right: 0,
             }}
           />
-
           <a.div
             className="absolute"
             style={{
@@ -163,7 +147,7 @@ const Timeline = ({ duration, currentTime, children }: any) => {
                 time={x.to((x) => (((x * 100) / INNER_WIDTH) * duration) / 100)}
               />
             </div>
-            <div className="w-1 h-8 bg-white" />
+            <div className="w-[1px] h-8 bg-white" />
           </a.div>
           <a.div
             className="absolute text-white flex flex-col items-end"
