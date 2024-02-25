@@ -34,3 +34,10 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## test
+
+pnpm install -D jest jest-environment-jsdom @testing-library/react @testing-library/jest-dom ts-node @types/jest jest-fail-on-console
+
+通过运行以下命令生成基本的 Jest 配置文件：
+pnpm create jest@latest

@@ -9,6 +9,7 @@ import { useTranslations, useLocale } from "next-intl";
 import type { MenuProps, MenuTheme } from "antd";
 
 import Icons from "@/components/Icons";
+import { useCustomTranslations } from "@/hooks";
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -19,9 +20,12 @@ export interface NavItem {
 }
 
 export default function NavTools() {
-  const t = useTranslations();
+  const t = useCustomTranslations();
 
   const locale = useLocale();
+
+  const msg = t("nav.Product", ["test"]);
+  console.log(`🚀 ~ msg11:`, msg);
 
   const ToolImages: MenuProps["items"] = [
     {
