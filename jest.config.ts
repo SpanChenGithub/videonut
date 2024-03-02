@@ -11,7 +11,6 @@ const config: Config = {
   moduleNameMapper: {
     // Handle module aliases (this will be automatically configured for you soon)
     "^@/(.*)$": "<rootDir>/src/$1",
-
     "^@/public/(.*)$": "<rootDir>/public/$1",
   },
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],

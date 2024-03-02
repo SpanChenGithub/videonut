@@ -1,12 +1,11 @@
 "use client";
 import { useLocale } from "next-intl";
 
-import { Dropdown, Select } from "antd";
+import { Select } from "antd";
 // import { usePathname } from "next-intl/client";
 // import Link from "next-intl/link";
 
-import { useRouter, usePathname } from "@/navigation";
-import { Link } from "@/navigation";
+import { usePathname, useRouter } from "@/navigation";
 
 import { languages } from "@/locale";
 

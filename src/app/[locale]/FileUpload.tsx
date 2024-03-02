@@ -1,7 +1,7 @@
 import Icons from "@/components/Icons";
-import { Button, Flex, Layout, Space, Typography, Upload, message } from "antd";
 import type { UploadProps } from "antd";
-import { useTranslations, useLocale } from "next-intl";
+import { Button, Flex, Layout, Space, Typography, Upload, message } from "antd";
+import { useLocale, useTranslations } from "next-intl";
 
 const { Dragger } = Upload;
 
@@ -50,12 +50,12 @@ export default function FileUpload({ setFile }: { setFile: Function }) {
   };
 
   return (
-    <Flex vertical align="center" className="bg-[#E6F3FF] h-full">
-      <Layout className="max-w-7xl w-full items-center">
-        <Flex vertical align="center" className="w-full h-full bg-[#E6F3FF]">
+    <Flex vertical align="center" className="h-full bg-[#E6F3FF]">
+      <Layout className="w-full max-w-7xl items-center">
+        <Flex vertical align="center" className="h-full w-full bg-[#E6F3FF]">
           <article className="py-[48px] text-center">
             <h1 className="text-5xl font-black">Online Video Converter</h1>
-            <Text className="!text-gray-900 font-medium text-xl">
+            <Text className="text-xl font-medium !text-gray-900">
               Use the free online video converter to change your video file
               format.
             </Text>
@@ -63,12 +63,12 @@ export default function FileUpload({ setFile }: { setFile: Function }) {
 
           <Flex
             justify="center"
-            className="bg-white rounded-2xl p-[24px] h-[360px] w-[1040px]"
+            className="h-[360px] w-[1040px] rounded-2xl bg-white p-[24px]"
           >
             <Dragger className="w-full" {...props}>
               <Paragraph className="w-full">
                 <Button
-                  className="!flex m-auto"
+                  className="m-auto !flex"
                   type="primary"
                   size="large"
                   icon={<Icons.Upload size="20px" />}

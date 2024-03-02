@@ -1,8 +1,7 @@
 "use client";
 import { useTranslations } from "next-intl";
 
-import { Layout, Tag } from "antd";
-import Icons from "@/components/Icons";
+import { Layout } from "antd";
 
 const { Header, Sider, Content, Footer } = Layout;
 

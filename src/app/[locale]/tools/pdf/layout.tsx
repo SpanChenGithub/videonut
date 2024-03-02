@@ -1,9 +1,9 @@
 "use client";
 import { useTranslations } from "next-intl";
 
-import type { UploadFile, UploadProps } from "antd/es/upload/interface";
+import type { UploadFile } from "antd/es/upload/interface";
 
-import { Upload, Layout } from "antd";
+import { Layout, Upload } from "antd";
 
 import { useState } from "react";
 
@@ -34,8 +34,6 @@ export default function Page({ params }: { params: any }) {
     // const imgWindow = window.open(src);
     // imgWindow?.document.write(image.outerHTML);
   };
-
-  
 
   const beforeUpload = () => false;
 

@@ -4,7 +4,6 @@
 import FileUpload from "./FileUpload";
 import VideoLayout from "./VideoLayout";
 
-import { Layout } from "antd";
 import withTheme from "@/theme";
 import { useState } from "react";
 

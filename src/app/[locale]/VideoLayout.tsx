@@ -1,25 +1,13 @@
 "use client";
 
-import {
-  Button,
-  Col,
-  Flex,
-  Layout,
-  Radio,
-  Row,
-  Space,
-  Tooltip,
-  Typography,
-} from "antd";
-import Icons from "@/components/Icons";
-import React, { useEffect, useState } from "react";
-import type { RadioChangeEvent } from "antd";
+import { Button, Col, Flex, Layout, Row, Space, Tooltip } from "antd";
+import { useEffect, useState } from "react";
 import { Circles } from "react-loader-spinner";
 
 import { VideoToFrames, VideoToFramesMethod } from "./VideoToFrame";
 
-import Image from "next/image";
 import AppDemo from "@/components/Timeline";
+import Image from "next/image";
 
 const DURATION = 500;
 
@@ -120,13 +108,13 @@ function VideoLayout({ file }: { file: File }) {
 
   return (
     <Layout className="h-full">
-      <Layout.Content className="p-[32px] bg-[#15202C] h-full">
+      <Layout.Content className="h-full bg-[#15202C] p-[32px]">
         <Space.Compact block>
           {videoList.map(({ label, icon }, index) => (
             <Tooltip title={label} key={index}>
               <Button
                 onClick={handleCurrentAction(label)}
-                className={`!text-white !flex gap-[6px] opacity-${
+                className={`!flex gap-[6px] !text-white opacity-${
                   currentAction === label ? 100 : 50
                 } !bg-[#ffffff29]`}
                 type="text"
@@ -148,10 +136,10 @@ function VideoLayout({ file }: { file: File }) {
           justify="space-evenly"
           vertical
           align="center"
-          className="py-[24px] h-full"
+          className="h-full py-[24px]"
         >
           {images.length > 0 && (
-            <img width={214} height={378} src={images[0]} alt="home" />
+            <Image width={214} height={378} src={images[0]} alt="home" />
           )}
           <Flex justify="center" align="center">
             {status === "LOADING" ? (
@@ -163,7 +151,7 @@ function VideoLayout({ file }: { file: File }) {
                     <Row wrap={false} justify="center" className="h-full">
                       {images.map((imageUrl) => (
                         <Col key={imageUrl} className="h-full">
-                          <img
+                          <Image
                             src={imageUrl}
                             alt={imageUrl}
                             className="h-full"

@@ -1,12 +1,12 @@
 "use client";
 
-import * as React from "react";
 import Link from "next/link";
+import * as React from "react";
 
 import { Dropdown, Layout } from "antd";
 
-import { useTranslations, useLocale } from "next-intl";
-import type { MenuProps, MenuTheme } from "antd";
+import type { MenuProps } from "antd";
+import { useLocale } from "next-intl";
 
 import Icons from "@/components/Icons";
 import { useCustomTranslations } from "@/hooks";

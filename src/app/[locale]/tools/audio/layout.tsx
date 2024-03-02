@@ -58,12 +58,12 @@ export default function Page({ params }: { params: any }) {
       <h1 className="m-[30px]">{params.convert}</h1>
       <Content className="container max-w-7xl ">
         {loaded ? (
-          <div className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+          <div className="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
             <video ref={videoRef} controls></video>
             <br />
             <button
               onClick={transcode}
-              className="bg-green-500 hover:bg-green-700 text-white py-3 px-6 rounded"
+              className="rounded bg-green-500 px-6 py-3 text-white hover:bg-green-700"
             >
               Transcode avi to mp4
             </button>
@@ -71,12 +71,12 @@ export default function Page({ params }: { params: any }) {
           </div>
         ) : (
           <button
-            className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex items-center bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
+            className="fixed left-[50%] top-[50%] flex translate-x-[-50%] translate-y-[-50%] items-center rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
             onClick={load}
           >
             Load ffmpeg-core
             {isLoading && (
-              <span className="animate-spin ml-3">
+              <span className="ml-3 animate-spin">
                 <svg
                   viewBox="0 0 1024 1024"
                   focusable="false"

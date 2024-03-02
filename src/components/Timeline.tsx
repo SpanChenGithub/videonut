@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { a, useSpring, to } from "react-spring";
-import { useDrag } from "react-use-gesture";
 import { clamp } from "lodash-es";
+import { useState } from "react";
+import { a, to, useSpring } from "react-spring";
+import { useDrag } from "react-use-gesture";
 
 const HOUR_IN_MS = 3600000;
 
@@ -119,22 +119,22 @@ const Timeline = ({ duration, currentTime, children }: any) => {
   return (
     <div
       style={{ width: `${OUTER_WIDTH}px` }}
-      className="h-full touch-none user-select-none -webkit-touch-callout-none"
+      className="user-select-none -webkit-touch-callout-none h-full touch-none"
     >
-      <div className="relative w-full h-full">
-        <div className="w-full h-full">{children}</div>
+      <div className="relative h-full w-full">
+        <div className="h-full w-full">{children}</div>
         <a.div
           id="timeline-container"
-          className="absolute top-0 w-full h-full"
+          className="absolute top-0 h-full w-full"
           style={{ x, width }}
         >
           <a.div
             id="timeline-inner"
             {...bindMiddle()}
-            className="absolute w-full h-full cursor-grab :active:cursor-grabbing"
+            className=":active:cursor-grabbing absolute h-full w-full cursor-grab"
           />
           <a.div
-            className="bg-[url('/assets/svg/drag-dot.svg')] bg-no-repeat bg-center absolute top-0 h-full flex items-center justify-center cursor-ew-resize bg-white"
+            className="absolute top-0 flex h-full cursor-ew-resize items-center justify-center bg-white bg-[url('/assets/svg/drag-dot.svg')] bg-center bg-no-repeat"
             {...bindLeft()}
             style={{
               borderRadius: `4px 0 0 4px`,
@@ -143,7 +143,7 @@ const Timeline = ({ duration, currentTime, children }: any) => {
             }}
           />
           <a.div
-            className="bg-[url('/assets/svg/drag-dot.svg')] bg-no-repeat bg-center absolute top-0 h-full flex items-center justify-center cursor-ew-resize bg-white"
+            className="absolute top-0 flex h-full cursor-ew-resize items-center justify-center bg-white bg-[url('/assets/svg/drag-dot.svg')] bg-center bg-no-repeat"
             {...bindRight()}
             style={{
               borderRadius: `0 4px 4px 0`,
@@ -171,10 +171,10 @@ const Timeline = ({ duration, currentTime, children }: any) => {
                 time={x.to((x) => (((x * 100) / INNER_WIDTH) * duration) / 100)}
               />
             </div>
-            <div className="w-[1px] h-8 bg-white" />
+            <div className="h-8 w-[1px] bg-white" />
           </a.div>
           <a.div
-            className="absolute text-white flex flex-col items-end"
+            className="absolute flex flex-col items-end text-white"
             style={{
               bottom: `calc(100% + ${BORDER_WIDTH + 8}px)`,
               right: `${HANDLE_WIDTH}px`,
@@ -197,7 +197,7 @@ const Timeline = ({ duration, currentTime, children }: any) => {
                 })}
               />
             </div>
-            <div className="w-[1px] h-8 bg-white" />
+            <div className="h-8 w-[1px] bg-white" />
           </a.div>
         </a.div>
 
@@ -233,7 +233,7 @@ export default function AppDemo({ children }: { children: any }) {
   // }, []);
 
   return (
-    <div className="h-[60px] flex" style={{ width: `${OUTER_WIDTH}px` }}>
+    <div className="flex h-[60px]" style={{ width: `${OUTER_WIDTH}px` }}>
       <Timeline duration={DURATION} currentTime={currentTime}>
         {children}
       </Timeline>

@@ -1,18 +1,17 @@
 import Link from "next/link";
 
-import Icons from "./Icons";
-import LocaleSwitcher from "./LocaleSwitcher";
-import Navbar from "./Navbar";
-import Logo from "./Logo";
-import { useTranslations } from "next-intl";
 import { Button, Flex } from "antd";
+import { useTranslations } from "next-intl";
+import LocaleSwitcher from "./LocaleSwitcher";
+import Logo from "./Logo";
+import Navbar from "./Navbar";
 
 export function SiteHeader() {
   const t = useTranslations();
 
   return (
     <header className="sticky top-0 z-40 w-full bg-white">
-      <div className="max-w-[1440px] m-auto flex md:px-[16px] lg:px-[22px] xl:px-[32px] md:py-[4px] lg:py-[6px] xl:py-[16px] h-[60px] items-center space-x-4 sm:justify-between sm:space-x-0">
+      <div className="m-auto flex h-[60px] max-w-[1440px] items-center space-x-4 sm:justify-between sm:space-x-0 md:px-[16px] md:py-[4px] lg:px-[22px] lg:py-[6px] xl:px-[32px] xl:py-[16px]">
         <div className="flex-center lg:gap-x-[10px] xl:gap-x-[48px]">
           <Logo />
           <Navbar />

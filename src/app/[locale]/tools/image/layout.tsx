@@ -4,16 +4,7 @@ import { useTranslations } from "next-intl";
 
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 
-import {
-  message,
-  Upload,
-  Form,
-  Layout,
-  Row,
-  Select,
-  Button,
-  Input,
-} from "antd";
+import { Layout, Row, Upload } from "antd";
 
 // import { InboxOutlined } from '@ant-design/icons';
 // import type { UploadProps } from "antd";
@@ -225,12 +216,12 @@ export default function Page({ params }: { params: any }) {
     <Layout className="h-full items-center px-8">
       <Content className="container max-w-7xl">
         <Row className="flex-center flex-col gap-y-2">
-          <h1 className="text-4xl my-6 font-bold leading-snug">Image Tools</h1>
+          <h1 className="my-6 text-4xl font-bold leading-snug">Image Tools</h1>
           <p className="text-1xl text-[#707375]">Free Online Image Tools</p>
         </Row>
-        <Layout className="max-w-7xl w-full items-center">
-          <Content className="p-8 w-full">
-            <div className="grid grid-cols-4 gap-4 font-mono text-white text-sm text-center font-bold leading-6 rounded-xl">
+        <Layout className="w-full max-w-7xl items-center">
+          <Content className="w-full p-8">
+            <div className="grid grid-cols-4 gap-4 rounded-xl text-center font-mono text-sm font-bold leading-6 text-white">
               {toolsList.map((props) => {
                 const { href, label, textClass, bgClass, title, description } =
                   props;
@@ -239,11 +230,11 @@ export default function Page({ params }: { params: any }) {
                     key={href}
                     href={href}
                     locale={locale}
-                    className="col-span-1 h-34 p-4 bg-white rounded-xl"
+                    className="h-34 col-span-1 rounded-xl bg-white p-4"
                   >
                     <div className="flex-start gap-3">
                       <div
-                        className={`mb-2 rounded-lg h-10 w-10 ${bgClass} flex-center`}
+                        className={`mb-2 h-10 w-10 rounded-lg ${bgClass} flex-center`}
                       >
                         <Icons.Image className="h-6 w-6" />
                       </div>
@@ -252,7 +243,7 @@ export default function Page({ params }: { params: any }) {
                         <span className={`text-xs ${textClass}`}>{label}</span>
                       </div>
                     </div>
-                    <p className="text-[#707375] text-left">{description}</p>
+                    <p className="text-left text-[#707375]">{description}</p>
                   </Link>
                 );
               })}

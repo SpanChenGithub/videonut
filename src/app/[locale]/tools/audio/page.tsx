@@ -1,5 +1,5 @@
-import Layout from "./layout";
 import type { Metadata } from "next";
+import Layout from "./layout";
 
 type Props = {
   params: { id: string };

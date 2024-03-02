@@ -1,4 +1,4 @@
-import { replacePlaceholders, useCustomTranslations } from "@/hooks/index";
+import { useCustomTranslations } from "@/hooks/index";
 
 import { renderHook } from "@testing-library/react";
 import { useTranslations } from "next-intl";

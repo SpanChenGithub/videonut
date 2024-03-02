@@ -1,6 +1,6 @@
+import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { AntdRegistry } from "@ant-design/nextjs-registry";
 
 import { NextIntlClientProvider } from "next-intl";
 // import { getLocale, getTranslations } from "next-intl/server";
@@ -33,7 +33,7 @@ export default async function RootLayout({
         <NextIntlClientProvider locale={locale} messages={messages}>
           <AntdRegistry>
             <SiteHeader />
-            <main className="m-aut text-gray-900 h-[calc(100vh-60px)] w-screen">
+            <main className="m-aut h-[calc(100vh-60px)] w-screen text-gray-900">
               {children}
             </main>
           </AntdRegistry>

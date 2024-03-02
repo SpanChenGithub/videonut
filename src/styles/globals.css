@@ -12,9 +12,9 @@
 
 @layer utilities {
   .flex-center {
-    @apply flex justify-center items-center;
+    @apply flex items-center justify-center;
   }
   .flex-start {
-    @apply flex justify-start items-start;
+    @apply flex items-start justify-start;
   }
 }

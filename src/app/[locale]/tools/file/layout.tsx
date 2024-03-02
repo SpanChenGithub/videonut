@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 
 import type { UploadFile, UploadProps } from "antd/es/upload/interface";
 
-import { Upload, Layout } from "antd";
+import { Layout, Upload } from "antd";
 
 import { useState } from "react";
 
