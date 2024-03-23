@@ -72,15 +72,15 @@ function VideoLayout({ file }: { file: File }) {
   const [images, setImages] = useState([""]);
   const [status, setStatus] = useState("IDLE");
 
-  useEffect(() => {
-    const id = setInterval(() => {
-      setCurrentTime((prev) => (prev >= DURATION * 1000 ? 0 : prev + 100));
-    }, 100);
+  // useEffect(() => {
+  //   const id = setInterval(() => {
+  //     setCurrentTime((prev) => (prev >= DURATION * 1000 ? 0 : prev + 100));
+  //   }, 100);
 
-    return () => {
-      clearInterval(id);
-    };
-  }, []);
+  //   return () => {
+  //     clearInterval(id);
+  //   };
+  // }, []);
 
   useEffect(() => {
     const handleFileToFrames = async () => {
@@ -152,6 +152,8 @@ function VideoLayout({ file }: { file: File }) {
                       {images.map((imageUrl) => (
                         <Col key={imageUrl} className="h-full">
                           <Image
+                            width={214}
+                            height={378}
                             src={imageUrl}
                             alt={imageUrl}
                             className="h-full"

@@ -1,6 +1,7 @@
+import { animated, to, useSpring } from "@react-spring/web";
+import { Tooltip } from "antd";
 import { clamp } from "lodash-es";
 import { useState } from "react";
-import { a, to, useSpring } from "react-spring";
 import { useDrag } from "react-use-gesture";
 
 const HOUR_IN_MS = 3600000;
@@ -33,10 +34,10 @@ const Time = ({ time }: any) => {
   return <span>{formatTime(time * 1000)}</span>;
 };
 
-const AnimatedTime = a(Time);
+const AnimatedTime = animated(Time);
 
 const Timeline = ({ duration, currentTime, children }: any) => {
-  const [{ x, width, fromVisible, toVisible, active }, set] = useSpring(() => ({
+  const [data, api] = useSpring(() => ({
     x: 0,
     width: "100%",
     active: false,
@@ -46,12 +47,20 @@ const Timeline = ({ duration, currentTime, children }: any) => {
     immediate: true,
   }));
 
+  const { x, width, fromVisible, toVisible, active } = data;
+  console.log(`🚀 ~ data:`, data);
+
+  console.log(`🚀 ~ fromVisible:11`, fromVisible.get());
+  console.log(`🚀 ~ toVisible:222`, toVisible);
+  // console.log(`🚀 ~ active:xxxxx`, active);
   const [leftGap, setLeftGap] = useState(0);
   const [rightGap, setRightGap] = useState(0);
   const [visibleWidth, setVisibleWidth] = useState(INNER_WIDTH);
 
   const bindLeft = useDrag(
-    ({ movement: [mx], first, memo, down }) => {
+    ({ movement: [mx], first, memo, down, moving }) => {
+      console.log(down, `down 🚀 ~ left moving:`, moving);
+
       if (first) memo = { width: width.get(), x: x.get() };
 
       const maxX =
@@ -69,7 +78,7 @@ const Timeline = ({ duration, currentTime, children }: any) => {
       const right = OUTER_WIDTH - center - nextX;
       setRightGap(right);
       setVisibleWidth(center);
-      set({
+      api({
         x: nextX,
         width: nextWidth,
         active: nextX !== 0 || nextWidth !== "100%",
@@ -80,27 +89,32 @@ const Timeline = ({ duration, currentTime, children }: any) => {
     },
     { initial: () => [x.get()] }
   );
-  const bindRight = useDrag(({ movement: [ox], first, memo, down }) => {
-    if (first) memo = width.get();
-    const maxWidth = pxToPcOuter(OUTER_WIDTH - x.get());
-    const minWidth = pxToPcOuter(2 * HANDLE_WIDTH);
-    const nextWidth =
-      clamp(memo.slice(0, -1) - pxToPcOuter(-ox), minWidth, maxWidth) + "%";
+  const bindRight = useDrag(
+    ({ movement: [ox], first, memo, down, dragging, moving }) => {
+      console.log(down, `down 🚀 ~ right moving:`, moving);
 
-    const center =
-      (clamp(memo.slice(0, -1) - pxToPcOuter(-ox), minWidth, maxWidth) / 100) *
-      OUTER_WIDTH;
-    const right = OUTER_WIDTH - center - leftGap;
-    setRightGap(right);
+      if (first) memo = width.get();
+      const maxWidth = pxToPcOuter(OUTER_WIDTH - x.get());
+      const minWidth = pxToPcOuter(2 * HANDLE_WIDTH);
+      const nextWidth =
+        clamp(memo.slice(0, -1) - pxToPcOuter(-ox), minWidth, maxWidth) + "%";
 
-    set({
-      width: nextWidth,
-      active: x.get() !== 0 || nextWidth !== "100%",
-      toVisible: down,
-      immediate: true,
-    });
-    return memo;
-  });
+      const center =
+        (clamp(memo.slice(0, -1) - pxToPcOuter(-ox), minWidth, maxWidth) /
+          100) *
+        OUTER_WIDTH;
+      const right = OUTER_WIDTH - center - leftGap;
+      setRightGap(right);
+
+      api({
+        width: nextWidth,
+        active: x.get() !== 0 || nextWidth !== "100%",
+        toVisible: down,
+        immediate: true,
+      });
+      return memo;
+    }
+  );
 
   const bindMiddle = useDrag(
     ({ movement: [mx], down }) => {
@@ -111,7 +125,7 @@ const Timeline = ({ duration, currentTime, children }: any) => {
       const right = OUTER_WIDTH - visibleWidth - nextX;
       setRightGap(right);
 
-      set({ x: nextX, fromVisible: down, toVisible: down, immediate: true });
+      api({ x: nextX, fromVisible: down, toVisible: down, immediate: true });
     },
     { initial: () => [x.get()] }
   );
@@ -123,35 +137,62 @@ const Timeline = ({ duration, currentTime, children }: any) => {
     >
       <div className="relative h-full w-full">
         <div className="h-full w-full">{children}</div>
-        <a.div
+        <animated.div
           id="timeline-container"
           className="absolute top-0 h-full w-full"
           style={{ x, width }}
         >
-          <a.div
+          <animated.div
             id="timeline-inner"
             {...bindMiddle()}
             className=":active:cursor-grabbing absolute h-full w-full cursor-grab"
           />
-          <a.div
-            className="absolute top-0 flex h-full cursor-ew-resize items-center justify-center bg-white bg-[url('/assets/svg/drag-dot.svg')] bg-center bg-no-repeat"
-            {...bindLeft()}
-            style={{
-              borderRadius: `4px 0 0 4px`,
-              width: `${HANDLE_WIDTH}px`,
-              left: 0,
-            }}
-          />
-          <a.div
-            className="absolute top-0 flex h-full cursor-ew-resize items-center justify-center bg-white bg-[url('/assets/svg/drag-dot.svg')] bg-center bg-no-repeat"
-            {...bindRight()}
-            style={{
-              borderRadius: `0 4px 4px 0`,
-              width: `${HANDLE_WIDTH}px`,
-              right: 0,
-            }}
-          />
-          <a.div
+
+          <Tooltip
+            title={
+              <AnimatedTime
+                time={x.to((x) => (((x * 100) / INNER_WIDTH) * duration) / 100)}
+              />
+            }
+            open={fromVisible.get()}
+          >
+            <animated.div
+              className="absolute top-0 flex h-full cursor-ew-resize items-center justify-center bg-white bg-[url('/assets/svg/drag-dot.svg')] bg-center bg-no-repeat"
+              {...bindLeft()}
+              style={{
+                borderRadius: `4px 0 0 4px`,
+                width: `${HANDLE_WIDTH}px`,
+                left: 0,
+              }}
+            />
+          </Tooltip>
+          <Tooltip
+            open={toVisible.get()}
+            title={
+              <AnimatedTime
+                time={to([x, width], (x, width) => {
+                  const innerXPc = pxToPcInner(x);
+                  const outerWidthPx = pcToPxOuter(`${width}`.slice(0, -1));
+                  const innerWidthPc = pxToPcInner(
+                    outerWidthPx - HANDLE_WIDTH * 2
+                  );
+                  return ((innerWidthPc + innerXPc) * duration) / 100;
+                })}
+              />
+            }
+          >
+            <animated.div
+              className="absolute top-0 flex h-full cursor-ew-resize items-center justify-center bg-white bg-[url('/assets/svg/drag-dot.svg')] bg-center bg-no-repeat"
+              {...bindRight()}
+              style={{
+                borderRadius: `0 4px 4px 0`,
+                width: `${HANDLE_WIDTH}px`,
+                right: 0,
+              }}
+            />
+          </Tooltip>
+
+          {/* <animated.div
             className="absolute"
             style={{
               left: `${HANDLE_WIDTH}px`,
@@ -167,13 +208,12 @@ const Timeline = ({ duration, currentTime, children }: any) => {
                 transform: `translateX(calc(-50% + 1px))`,
               }}
             >
-              <AnimatedTime
-                time={x.to((x) => (((x * 100) / INNER_WIDTH) * duration) / 100)}
-              />
+              sss
             </div>
+
             <div className="h-8 w-[1px] bg-white" />
-          </a.div>
-          <a.div
+          </animated.div> */}
+          {/* <animated.div
             className="absolute flex flex-col items-end text-white"
             style={{
               bottom: `calc(100% + ${BORDER_WIDTH + 8}px)`,
@@ -198,8 +238,8 @@ const Timeline = ({ duration, currentTime, children }: any) => {
               />
             </div>
             <div className="h-8 w-[1px] bg-white" />
-          </a.div>
-        </a.div>
+          </animated.div> */}
+        </animated.div>
 
         <div id="timeline-left" className="z-1 absolute top-0 h-full">
           <svg width={`${leftGap}px`} height="100%">
