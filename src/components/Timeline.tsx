@@ -37,7 +37,7 @@ const Time = ({ time }: any) => {
 const AnimatedTime = animated(Time);
 
 const Timeline = ({ duration, currentTime, children }: any) => {
-  const [data, api] = useSpring(() => ({
+  const [springProps, api] = useSpring(() => ({
     x: 0,
     width: "100%",
     active: false,
@@ -47,20 +47,13 @@ const Timeline = ({ duration, currentTime, children }: any) => {
     immediate: true,
   }));
 
-  const { x, width, fromVisible, toVisible, active } = data;
-  console.log(`🚀 ~ data:`, data);
-
-  console.log(`🚀 ~ fromVisible:11`, fromVisible.get());
-  console.log(`🚀 ~ toVisible:222`, toVisible);
-  // console.log(`🚀 ~ active:xxxxx`, active);
+  const { x, width, fromVisible, toVisible, active } = springProps;
   const [leftGap, setLeftGap] = useState(0);
   const [rightGap, setRightGap] = useState(0);
   const [visibleWidth, setVisibleWidth] = useState(INNER_WIDTH);
 
   const bindLeft = useDrag(
     ({ movement: [mx], first, memo, down, moving }) => {
-      console.log(down, `down 🚀 ~ left moving:`, moving);
-
       if (first) memo = { width: width.get(), x: x.get() };
 
       const maxX =
@@ -91,8 +84,6 @@ const Timeline = ({ duration, currentTime, children }: any) => {
   );
   const bindRight = useDrag(
     ({ movement: [ox], first, memo, down, dragging, moving }) => {
-      console.log(down, `down 🚀 ~ right moving:`, moving);
-
       if (first) memo = width.get();
       const maxWidth = pxToPcOuter(OUTER_WIDTH - x.get());
       const minWidth = pxToPcOuter(2 * HANDLE_WIDTH);
