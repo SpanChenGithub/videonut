@@ -104,7 +104,7 @@ function VideoLayout({ file }: { file: File }) {
   });
 
   const { run } = useDebounceFn(handleFileToFrames, {
-    wait: 100,
+    wait: 500,
   });
 
   useEffect(() => {
