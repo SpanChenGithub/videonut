@@ -1,15 +1,19 @@
 "use client";
 
 import { Button, Col, Flex, Layout, Row, Space, Tooltip } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Circles } from "react-loader-spinner";
 
 import { VideoToFrames, VideoToFramesMethod } from "./VideoToFrame";
 
-import AppDemo from "@/components/Timeline";
 import Image from "next/image";
 
 const DURATION = 500;
+
+const FRAMES_WIDTH = 28;
+
+import Timeline, { OUTER_WIDTH } from "@/components/Timeline";
+import { useDebounceFn, useMemoizedFn, useSize } from "ahooks";
 
 const videoList = [
   {
@@ -82,32 +86,50 @@ function VideoLayout({ file }: { file: File }) {
   //   };
   // }, []);
 
+  const ref = useRef(null);
+
+  const size = useSize(ref);
+
+  const handleFileToFrames = useMemoizedFn(async () => {
+    const fileUrl = URL.createObjectURL(file);
+    console.log(`🚀 ~ fileUrl:`, 111);
+
+    const frames = await VideoToFrames.getFrames(
+      fileUrl,
+      OUTER_WIDTH() / FRAMES_WIDTH,
+      VideoToFramesMethod.totalFrames
+    );
+    setStatus("IDLE");
+    setImages(frames);
+  });
+
+  const { run } = useDebounceFn(handleFileToFrames, {
+    wait: 100,
+  });
+
   useEffect(() => {
-    const handleFileToFrames = async () => {
-      const fileUrl = URL.createObjectURL(file);
-
-      const frames = await VideoToFrames.getFrames(
-        fileUrl,
-        30,
-        VideoToFramesMethod.totalFrames
-      );
-      setStatus("IDLE");
-      setImages(frames);
-    };
-
     if (file) {
       setImages([]);
       setStatus("LOADING");
       handleFileToFrames();
     }
-  }, [file]);
+  }, [file, handleFileToFrames]);
+
+  useEffect(() => {
+    if (file) {
+      // todo:防抖
+      run();
+    }
+  }, [file, size?.width, run]);
+
+  console.log(`🚀 ~ size:`, size);
 
   // const [images, setImages] = useState([]);
   // const [status, setStatus] = useState("IDLE");
   const now = new Date().toDateString();
 
   return (
-    <Layout className="h-full">
+    <Layout ref={ref} className="h-full w-full">
       <Layout.Content className="h-full bg-[#15202C] p-[32px]">
         <Space.Compact block>
           {videoList.map(({ label, icon }, index) => (
@@ -145,7 +167,7 @@ function VideoLayout({ file }: { file: File }) {
             {status === "LOADING" ? (
               <Circles color="#00BFFF" height={100} width={100} />
             ) : (
-              <AppDemo>
+              <Timeline>
                 {images?.length > 0 && (
                   <Row wrap={false} justify="center" className="h-full">
                     {images.map((imageUrl) => (
@@ -161,7 +183,7 @@ function VideoLayout({ file }: { file: File }) {
                     ))}
                   </Row>
                 )}
-              </AppDemo>
+              </Timeline>
             )}
           </Flex>
         </Flex>

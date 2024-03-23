@@ -17,16 +17,17 @@ const formatTime = (ms: any) => {
   return date.toISOString().substr(11, 8);
 };
 
-const OUTER_WIDTH = 700;
+// TODO:做成动态的
+export const OUTER_WIDTH = () => window.innerWidth - 64;
 const HANDLE_WIDTH = 16;
-const INNER_WIDTH = OUTER_WIDTH - HANDLE_WIDTH * 2;
+const INNER_WIDTH = OUTER_WIDTH() - HANDLE_WIDTH * 2;
 const BORDER_WIDTH = 6;
 
 const pxToPc = (px: any, max: any) => (px * 100) / max;
 const pcToPx = (pc: any, max: any) => (pc * max) / 100;
 
-const pxToPcOuter = (px: any) => pxToPc(px, OUTER_WIDTH);
-const pcToPxOuter = (pc: any) => pcToPx(pc, OUTER_WIDTH);
+const pxToPcOuter = (px: any) => pxToPc(px, OUTER_WIDTH());
+const pcToPxOuter = (pc: any) => pcToPx(pc, OUTER_WIDTH());
 const pxToPcInner = (px: any) => pxToPc(px, INNER_WIDTH);
 const pcToPxInner = (pc: any) => pcToPx(pc, INNER_WIDTH);
 
@@ -34,9 +35,11 @@ const Time = ({ time }: any) => {
   return <span>{formatTime(time * 1000)}</span>;
 };
 
+const DURATION = 500;
+
 const AnimatedTime = animated(Time);
 
-const Timeline = ({ duration, currentTime, children }: any) => {
+const Timeline = ({ duration = DURATION, children }: any) => {
   const [springProps, api] = useSpring(() => ({
     x: 0,
     width: "100%",
@@ -65,10 +68,10 @@ const Timeline = ({ duration, currentTime, children }: any) => {
 
       const center =
         (Number(memo.width.slice(0, -1) - pxToPcOuter(nextX - memo.x)) / 100) *
-        OUTER_WIDTH;
+        OUTER_WIDTH();
 
       setLeftGap(nextX);
-      const right = OUTER_WIDTH - center - nextX;
+      const right = OUTER_WIDTH() - center - nextX;
       setRightGap(right);
       setVisibleWidth(center);
       api({
@@ -85,7 +88,7 @@ const Timeline = ({ duration, currentTime, children }: any) => {
   const bindRight = useDrag(({ movement: [ox], first, memo, down }) => {
     if (first) memo = width.get();
 
-    const maxWidth = pxToPcOuter(OUTER_WIDTH - x.get());
+    const maxWidth = pxToPcOuter(OUTER_WIDTH() - x.get());
     const minWidth = pxToPcOuter(2 * HANDLE_WIDTH);
 
     const nextWidth =
@@ -93,9 +96,9 @@ const Timeline = ({ duration, currentTime, children }: any) => {
 
     const center =
       (clamp(memo.slice(0, -1) - pxToPcOuter(-ox), minWidth, maxWidth) / 100) *
-      OUTER_WIDTH;
+      OUTER_WIDTH();
 
-    const right = OUTER_WIDTH - center - leftGap;
+    const right = OUTER_WIDTH() - center - leftGap;
     setRightGap(right);
 
     setVisibleWidth(center);
@@ -111,11 +114,11 @@ const Timeline = ({ duration, currentTime, children }: any) => {
 
   const bindMiddle = useDrag(
     ({ movement: [mx], down }) => {
-      const maxX = OUTER_WIDTH - pcToPxOuter(width.get().slice(0, -1));
+      const maxX = OUTER_WIDTH() - pcToPxOuter(width.get().slice(0, -1));
       const nextX = clamp(mx, 0, maxX);
 
       setLeftGap(nextX);
-      const right = OUTER_WIDTH - visibleWidth - nextX;
+      const right = OUTER_WIDTH() - visibleWidth - nextX;
       setRightGap(right);
 
       api({ x: nextX, fromVisible: down, toVisible: down, immediate: true });
@@ -125,7 +128,7 @@ const Timeline = ({ duration, currentTime, children }: any) => {
 
   return (
     <div
-      style={{ width: `${OUTER_WIDTH}px` }}
+      style={{ width: `${OUTER_WIDTH()}px` }}
       className="user-select-none -webkit-touch-callout-none h-full touch-none"
     >
       <div className="relative h-full w-full">
@@ -199,9 +202,11 @@ const Timeline = ({ duration, currentTime, children }: any) => {
   );
 };
 
-const DURATION = 500;
+export default Timeline;
 
-export default function AppDemo({ children }: { children: any }) {
+// export
+
+function AppDemo({ children }: { children: any }) {
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
 
@@ -215,11 +220,7 @@ export default function AppDemo({ children }: { children: any }) {
   //   };
   // }, []);
 
-  return (
-    <div className="flex h-[60px]" style={{ width: `${OUTER_WIDTH}px` }}>
-      <Timeline duration={DURATION} currentTime={currentTime}>
-        {children}
-      </Timeline>
-    </div>
-  );
+  // <div className="flex h-[60px]" style={{ width: `${OUTER_WIDTH}px` }}>
+  return <Timeline duration={DURATION}>{children}</Timeline>;
+  // {/* </div> */}
 }
