@@ -145,25 +145,23 @@ function VideoLayout({ file }: { file: File }) {
             {status === "LOADING" ? (
               <Circles color="#00BFFF" height={100} width={100} />
             ) : (
-              <Flex>
-                <AppDemo>
-                  {images?.length > 0 && (
-                    <Row wrap={false} justify="center" className="h-full">
-                      {images.map((imageUrl) => (
-                        <Col key={imageUrl} className="h-full">
-                          <Image
-                            width={214}
-                            height={378}
-                            src={imageUrl}
-                            alt={imageUrl}
-                            className="h-full"
-                          />
-                        </Col>
-                      ))}
-                    </Row>
-                  )}
-                </AppDemo>
-              </Flex>
+              <AppDemo>
+                {images?.length > 0 && (
+                  <Row wrap={false} justify="center" className="h-full">
+                    {images.map((imageUrl) => (
+                      <Col key={imageUrl} className="h-full">
+                        <Image
+                          width={214}
+                          height={378}
+                          src={imageUrl}
+                          alt={imageUrl}
+                          className="h-full"
+                        />
+                      </Col>
+                    ))}
+                  </Row>
+                )}
+              </AppDemo>
             )}
           </Flex>
         </Flex>
