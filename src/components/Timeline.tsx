@@ -18,7 +18,12 @@ const formatTime = (ms: any) => {
 };
 
 // TODO:做成动态的
-export const OUTER_WIDTH = () => window.innerWidth - 64;
+export const OUTER_WIDTH = () => {
+  if (typeof window !== "undefined") {
+    return window?.innerWidth - 64;
+  }
+  return 0;
+};
 const HANDLE_WIDTH = 16;
 const INNER_WIDTH = OUTER_WIDTH() - HANDLE_WIDTH * 2;
 const BORDER_WIDTH = 6;
