@@ -1,10 +1,19 @@
 "use client";
 
-import { Button, Col, Flex, Layout, Row, Space, Tooltip } from "antd";
-import { useEffect, useRef, useState } from "react";
+import {
+  Button,
+  Col,
+  Flex,
+  Layout,
+  Row,
+  Space,
+  Tooltip,
+  UploadFile,
+} from "antd";
+import { useRef, useState } from "react";
 import { Circles } from "react-loader-spinner";
 
-import { VideoToFrames, VideoToFramesMethod } from "./VideoToFrame";
+import { VideoToFrames, VideoToFramesMethod } from "../../utils/VideoToFrame";
 
 import Image from "next/image";
 
@@ -65,7 +74,16 @@ const videoList = [
     icon: "/assets/svg/remove-logo.svg",
   },
 ];
-function VideoLayout({ file }: { file: File }) {
+function VideoLayout({
+  fileList,
+  images,
+  status,
+}: {
+  fileList: UploadFile[];
+  status: string;
+  images: string[];
+}) {
+  const file = fileList[0]?.originFileObj;
   const [currentAction, setCurrentAction] = useState("");
   const handleCurrentAction = (value: string) => {
     return () => setCurrentAction(value);
@@ -73,8 +91,8 @@ function VideoLayout({ file }: { file: File }) {
 
   const [currentTime, setCurrentTime] = useState(0);
 
-  const [images, setImages] = useState([""]);
-  const [status, setStatus] = useState("IDLE");
+  // const [images, setImages] = useState([""]);
+  // const [status, setStatus] = useState("IDLE");
 
   // useEffect(() => {
   //   const id = setInterval(() => {
@@ -91,36 +109,37 @@ function VideoLayout({ file }: { file: File }) {
   const size = useSize(ref);
 
   const handleFileToFrames = useMemoizedFn(async () => {
-    const fileUrl = URL.createObjectURL(file);
-    console.log(`🚀 ~ fileUrl:`, 111);
+    if (file) {
+      const fileUrl = URL.createObjectURL(file);
+      console.log(`🚀 ~ fileUrl:`, fileUrl);
 
-    const frames = await VideoToFrames.getFrames(
-      fileUrl,
-      OUTER_WIDTH() / FRAMES_WIDTH,
-      VideoToFramesMethod.totalFrames
-    );
-    setStatus("IDLE");
-    setImages(frames);
+      const frames = await VideoToFrames.getFrames(
+        fileUrl,
+        OUTER_WIDTH() / FRAMES_WIDTH,
+        VideoToFramesMethod.totalFrames
+      );
+      // setStatus("IDLE");
+      // setImages(frames);
+    }
   });
 
   const { run } = useDebounceFn(handleFileToFrames, {
     wait: 500,
   });
 
-  useEffect(() => {
-    if (file) {
-      setImages([]);
-      setStatus("LOADING");
-      handleFileToFrames();
-    }
-  }, [file, handleFileToFrames]);
+  // useEffect(() => {
+  //   if (file) {
+  //     // setImages([]);
+  //     // setStatus("LOADING");
+  //     handleFileToFrames();
+  //   }
+  // }, [file, handleFileToFrames]);
 
-  useEffect(() => {
-    if (file) {
-      // todo:防抖
-      run();
-    }
-  }, [file, size?.width, run]);
+  // useEffect(() => {
+  //   if (file) {
+  //     run();
+  //   }
+  // }, [file, size?.width, run]);
 
   console.log(`🚀 ~ size:`, size);
 

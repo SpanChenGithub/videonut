@@ -1,0 +1,39 @@
+.file-upload-layout {
+  position: relative;
+
+  .ant-upload-list {
+    .ant-upload-list-item:hover {
+      display: none;
+    }
+  }
+
+  .ant-upload-list.ant-upload-list-text {
+    //
+    position: absolute;
+    width: 100%;
+
+    top: 50%;
+    // left: 50%;
+
+    .ant-upload-list-item.ant-upload-list-item-uploading {
+      width: 100%;
+      height: auto;
+
+      .ant-upload-list-item-actions {
+        display: none;
+      }
+
+      .ant-upload-icon {
+        display: none;
+      }
+    }
+
+    .ant-upload-list-item-name {
+      display: none;
+      width: 100%;
+    }
+    // .ant-progress-text {
+    //   display: none;
+    // }
+  }
+}

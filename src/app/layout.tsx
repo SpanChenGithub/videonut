@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 
+import "@/styles/antd.scss";
 import "@/styles/globals.css";
 
 type Props = {
